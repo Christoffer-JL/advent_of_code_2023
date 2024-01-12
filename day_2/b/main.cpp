@@ -6,7 +6,7 @@
 
 using namespace std;
 
-bool check_possibility(string &set)
+void check_possibility(string &set, int &red, int &green, int &blue)
 {
     map<string, int> counts = {
         {"blue", 14},
@@ -35,14 +35,28 @@ bool check_possibility(string &set)
             if (cube_color_and_count.find(p.first) != string::npos)
             {
                 int count = stoi(cube_color_and_count.substr(0, cube_color_and_count.find_last_of(' ')));
-                if (p.second < count)
+                cube_color_and_count.erase(0, cube_color_and_count.find_last_of(' ') + 1);
+
+                if (cube_color_and_count == "green")
                 {
-                    return false;
+                    if (count > green)
+                        green = count;
+                }
+
+                else if (cube_color_and_count == "red")
+                {
+                    if (count > red)
+                        red = count;
+                }
+
+                else if (cube_color_and_count == "blue")
+                {
+                    if (count > blue)
+                        blue = count;
                 }
             }
         }
     }
-    return true;
 }
 
 int main()
@@ -52,7 +66,7 @@ int main()
     int game_tot{0};
     while (getline(in, game))
     {
-        bool impossible = false;
+        int red{0}, blue{0}, green{0};
 
         string game_num(&game[game.find_first_of(' ') + 1], &game[game.find_first_of(':')]);
 
@@ -74,13 +88,10 @@ int main()
                 game = "";
             }
 
-            if (!check_possibility(set))
-            {
-                impossible = true;
-            }
+            check_possibility(set, red, green, blue);
         }
-        if (!impossible)
-            game_tot += stoi(game_num);
+
+        game_tot += red * green * blue;
     }
     cout << "Tot: " << game_tot << endl;
     return 0;
