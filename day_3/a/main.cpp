@@ -1,11 +1,9 @@
-
 #include "../debug.h"
 
 string not_signs = "0123456789.";
 
 int main()
 {
-
     ifstream in("input_real");
 
     string upper_line, middle_line, lower_line, temp_line;
